@@ -4,9 +4,14 @@ from mysql.connector import connect, Error
 
 
 class DBManager:
-    QUERY_CREATE_DB = "CREATE DATABASE"
-    QUERY_CONNECT_DB = "USE"
-    QUERY_SHOW_ALL_DB = "SHOW DATABASES"
+    QUERY_DB_DICT = \
+        {
+            "create":   "CREATE DATABASE",
+            "delete":   "DROP DATABASE [IF EXISTS]",
+            "connect":  "USE",
+            "show_all_db": "SHOW DATABASES",
+            "show_all_table": "SHOW TABLES"
+        }
 
     def __init__(self, username: str, password: str):
         self.session = None
@@ -38,19 +43,19 @@ class DBManager:
         self.session = None
 
     #################### DATABASE SECTION ####################
-    def db_create(self, db_name: str):
-        db_name = " " + db_name
-        self.cursor.execute(self.QUERY_CREATE_DB + db_name)
+    def db_command(self, cmd: str, str_cmd: str = None):
+        ret_val = None
 
-    def db_connect(self, db_name: str):
-        db_name = " " + db_name
-        self.cursor.execute(self.QUERY_CONNECT_DB + db_name)
+        db_cmd = self.QUERY_DB_DICT.get(cmd)
 
-    def db_show_all(self):
-        self.cursor.execute(self.QUERY_SHOW_ALL_DB)
+        if db_cmd is not None:
+            if str_cmd is None:
+                self.cursor.execute(db_cmd)
+            else:
+                self.cursor.execute(db_cmd + " " + str_cmd)
+            ret_val = [item for item in self.cursor]
 
-        database_list = [item for item in self.cursor]
-        return database_list
+        return ret_val
 
     #################### RAW COMMAND SECTION ####################
     def command(self, cmd):
@@ -59,12 +64,27 @@ class DBManager:
 
 
 if __name__ == '__main__':
+    cmd_mode = True
+
     username = input("Enter username: ")
     password = input("Enter password: ")
 
     DB = DBManager(username, password)
 
-    db_list = DB.db_show_all()
-    print("[RESP]=", db_list)
+    if cmd_mode:
+        ret_val = ""
+
+        while True:
+            cmd = input(">> ")
+            ret_val = DB.command(cmd)
+            print("RET = ", ret_val)
+
+    else:
+        db_list = DB.db_command("show_all_db")
+        print("[RESP]=", db_list)
+
+        db_list = DB.db_command("connect", "todo_dev")
+        db_list = DB.db_command("show_all_table")
+        print("[RESP]=", db_list)
 
     DB.close_session()
