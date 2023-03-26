@@ -1,6 +1,9 @@
 from mysql.connector import connect, Error
 
-"""QUERY DEFINITIONS"""
+"""
+    REFERENCES:
+        - https://dev.mysql.com/doc/refman/5.7/en/data-types.html
+"""
 
 
 class DBManager:
@@ -57,6 +60,7 @@ class DBManager:
 
         return ret_val
 
+    #################### TABLE SECTION ####################
     #################### RAW COMMAND SECTION ####################
     def command(self, cmd):
         self.cursor.execute(cmd)
@@ -66,16 +70,18 @@ class DBManager:
 if __name__ == '__main__':
     cmd_mode = True
 
-    username = input("Enter username: ")
-    password = input("Enter password: ")
+    user = input("Enter username: ")
+    pw = input("Enter password: ")
 
-    DB = DBManager(username, password)
+    DB = DBManager(user, pw)
 
     if cmd_mode:
         ret_val = ""
 
         while True:
             cmd = input(">> ")
+            if cmd == "exit":
+                break
             ret_val = DB.command(cmd)
             print("RET = ", ret_val)
 
@@ -83,7 +89,7 @@ if __name__ == '__main__':
         db_list = DB.db_command("show_all_db")
         print("[RESP]=", db_list)
 
-        db_list = DB.db_command("connect", "todo_dev")
+        DB.db_command("connect", "todo_dev")
         db_list = DB.db_command("show_all_table")
         print("[RESP]=", db_list)
 
