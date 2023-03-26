@@ -1,4 +1,3 @@
-from getpass import getpass
 from mysql.connector import connect, Error
 
 """QUERY DEFINITIONS"""
@@ -6,6 +5,7 @@ from mysql.connector import connect, Error
 
 class DBManager:
     QUERY_CREATE_DB = "CREATE DATABASE"
+    QUERY_CONNECT_DB = "USE"
     QUERY_SHOW_ALL_DB = "SHOW DATABASES"
 
     def __init__(self, username: str, password: str):
@@ -44,7 +44,7 @@ class DBManager:
 
     def db_connect(self, db_name: str):
         db_name = " " + db_name
-        self.cursor.execute(self.QUERY_CREATE_DB + db_name)
+        self.cursor.execute(self.QUERY_CONNECT_DB + db_name)
 
     def db_show_all(self):
         self.cursor.execute(self.QUERY_SHOW_ALL_DB)
@@ -52,12 +52,18 @@ class DBManager:
         database_list = [item for item in self.cursor]
         return database_list
 
+    #################### RAW COMMAND SECTION ####################
+    def command(self, cmd):
+        self.cursor.execute(cmd)
+        return [item for item in self.cursor]
+
 
 if __name__ == '__main__':
     username = input("Enter username: ")
     password = input("Enter password: ")
 
     DB = DBManager(username, password)
+
     db_list = DB.db_show_all()
     print("[RESP]=", db_list)
 
