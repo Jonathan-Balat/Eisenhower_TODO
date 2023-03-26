@@ -1,5 +1,6 @@
 from PySide2.QtWidgets import QMainWindow
 
+
 class MainWindowClass(QMainWindow):
     session = None
 

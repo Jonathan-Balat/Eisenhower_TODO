@@ -2,7 +2,6 @@
 # from PySide2.QtGui import
 from gui_library.MainWindow import MainWindowClass
 from PySide2.QtWidgets import QApplication
-from time import time
 """
     References:
         - https://www.pythonguis.com/pyside2-tutorial/
@@ -12,9 +11,12 @@ from time import time
 class GUIMain:
 
     def __init__(self, app_session, screen=0):
-        self.main_window = MainWindowClass(app_session, screen)
+        if isinstance(app_session, QApplication):
+            self.main_window = MainWindowClass(app_session, screen)
 
-        self.main_window.show()
+            self.main_window.show()
+        else:
+            print("[ERROR]: Application session does not exist!")
 
 
 if "__main__" == __name__:
