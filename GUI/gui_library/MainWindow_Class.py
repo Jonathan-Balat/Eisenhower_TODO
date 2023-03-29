@@ -15,7 +15,7 @@ class MainWindowClass(QMainWindow):
         self.resize_window()
 
     #################### EVENTS ####################
-    # FOr debugging only
+    # For debugging only
     # def event(self, event):
     #     if event.type() == event.Type.Move:
     #         # print("DRAGGING")
