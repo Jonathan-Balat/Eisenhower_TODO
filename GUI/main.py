@@ -4,6 +4,7 @@ from gui_library.MainWindow_Class import MainWindowClass
 from Menu_Class.Menu_Class import MenuClass
 from gui_library.Frame_Class import FrameClass
 from PySide2.QtWidgets import QApplication
+
 """
     References:
         - https://www.pythonguis.com/pyside2-tutorial/
@@ -15,7 +16,7 @@ class GUIMain(MainWindowClass):
     TOOL_TIP_DURATION = 5000
 
     DISP_MENU_W = 0.1
-    DISP_DASH_H = 0.1
+    DISP_DASH_H = 0.15
 
     def __init__(self, app_session, screen=0):
         if isinstance(app_session, QApplication):
@@ -41,13 +42,18 @@ class GUIMain(MainWindowClass):
             print("[ERROR]: Application session does not exist!")
 
     def resizeEvent(self, event):
-        self.menu.setGeometry(0, 0,
-                              int(self.width()*GUIMain.DISP_MENU_W),
-                              int(self.height()))
+        self.menu.setMinimumSize(10, self.height())
+        self.menu.setMaximumSize(int(self.width()*GUIMain.DISP_MENU_W), self.height())
+        self.menu.resize(self.width(), self.height())
 
-        self.f_dashboard.setGeometry(self.menu.width(), 0,
-                                     self.width() - self.menu.width(),
-                                     int(self.height()*GUIMain.DISP_DASH_H))
+        self.f_dashboard.move(self.menu.width(), 0)
+        self.f_dashboard.setMinimumSize(self.width() - self.menu.width(), 100)
+        self.f_dashboard.setMaximumSize(self.width() - self.menu.width(), int(self.height()*GUIMain.DISP_DASH_H))
+        self.f_dashboard.resize(self.width(), self.height())
+
+        # self.f_dashboard.setGeometry(self.menu.width(), 0,
+        #                              self.width() - self.menu.width(),
+        #                              int(self.height()*GUIMain.DISP_DASH_H))
 
         self.f_main.setGeometry(self.menu.width(), self.f_dashboard.height(),
                                 self.width() - self.menu.width(),
