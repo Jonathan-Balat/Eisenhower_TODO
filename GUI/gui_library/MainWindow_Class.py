@@ -14,6 +14,9 @@ class MainWindowClass(QMainWindow):
         self.select_screen(screen)
         self.resize_window()
 
+        # Resize Automatically once
+        self.resize(1.75*MainWindowClass.window_half_size[0], 1.75*MainWindowClass.window_half_size[1])
+
     #################### EVENTS ####################
     # For debugging only
     # def event(self, event):
@@ -50,7 +53,7 @@ class MainWindowClass(QMainWindow):
         h = MainWindowClass.current_screen.availableGeometry().height()
         MainWindowClass.window_half_size = (w / 2, h / 2)
 
-        self.move(x + w / 4, y + h / 4)
+        self.move(x + w / 16, y + h / 16)
 
         self.setMinimumSize(w / 2, h / 2)
         self.setMaximumSize(w, h)

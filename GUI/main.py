@@ -1,60 +1,64 @@
 # from PySide2.QtCore import
 # from PySide2.QtGui import
 from gui_library.MainWindow_Class import MainWindowClass
+from Menu_Class.Menu_Class import MenuClass
 from gui_library.Frame_Class import FrameClass
-from PySide2.QtWidgets import QApplication, QFrame
+from PySide2.QtWidgets import QApplication
 """
     References:
         - https://www.pythonguis.com/pyside2-tutorial/
 """
 
 
-class GUIMain:
+class GUIMain(MainWindowClass):
+
+    TOOL_TIP_DURATION = 5000
+
+    DISP_MENU_W = 0.1
+    DISP_DASH_H = 0.1
 
     def __init__(self, app_session, screen=0):
         if isinstance(app_session, QApplication):
-            self.main_window = MainWindowClass(app_session, screen)
+            super(GUIMain, self).__init__(app_session, screen)
 
-            # Refactor under each module, MENU, DASHBOARD, MAIN
-            self.f_menu = FrameClass(self.main_window,
-                                     (0, 0, 0, 0),
-                                     "QFrame {background-color: rgba(128,60,128,255);}")
+            # TODO: Refactor under each module, MENU, DASHBOARD, MAIN
+            self.menu = MenuClass(self)
 
-            self.f_dashboard = FrameClass(self.main_window,
+            self.f_dashboard = FrameClass(self,
                                           (0, 0, 0, 0),
                                           "QFrame {background-color: rgba(128,128,60,255);}")
 
-            self.f_main = FrameClass(self.main_window,
+            self.f_main = FrameClass(self,
                                      (0, 0, 0, 0),
                                      "QFrame {background-color: rgba(128,0,0,255);}")
-            # Call once to resize widgets accordingly
-            self.resizeEvent(None)
 
             # Override Widget event function with new assignment
-            self.main_window.resizeEvent = self.resizeEvent
+            self.resizeEvent = self.resizeEvent
 
-            self.main_window.show()
+            self.show()
+
         else:
             print("[ERROR]: Application session does not exist!")
 
     def resizeEvent(self, event):
-        self.f_menu.setGeometry(0, 0,
-                                int(self.main_window.width()*0.1),
-                                int(self.main_window.height()))
+        self.menu.setGeometry(0, 0,
+                              int(self.width()*GUIMain.DISP_MENU_W),
+                              int(self.height()))
 
-        self.f_dashboard.setGeometry(self.f_menu.width(), 0,
-                                     self.main_window.width() - self.f_menu.width(),
-                                     int(self.main_window.height()*0.1))
+        self.f_dashboard.setGeometry(self.menu.width(), 0,
+                                     self.width() - self.menu.width(),
+                                     int(self.height()*GUIMain.DISP_DASH_H))
 
-        self.f_main.setGeometry(self.f_menu.width(), self.f_dashboard.height(),
-                                self.main_window.width() - self.f_menu.width(),
-                                int(self.main_window.height() - self.f_dashboard.height()))
+        self.f_main.setGeometry(self.menu.width(), self.f_dashboard.height(),
+                                self.width() - self.menu.width(),
+                                int(self.height() - self.f_dashboard.height()))
 
+        print(self.menu.width(), self.f_dashboard.height())
 
 
 if "__main__" == __name__:
     app = QApplication([])
-    main = GUIMain(app, 1)
+    main = GUIMain(app, 0)
 
     # Start the event loop.
     app.exec_()
