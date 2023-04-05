@@ -24,7 +24,14 @@ class MenuClass(QWidget):
         self.setMouseTracking(True)
 
     def resizeEvent(self, event):
-        ...
+        width, height = self.parent().size().toTuple()
+
+        self.setMaximumSize(int(width*0.1), height)
+        self.setMinimumSize(0, self.maximumHeight())
+        self.resize(width, height)
+
+        self.f_menu.setMinimumSize(0, height)
+        self.f_menu.setMaximumSize(self.maximumWidth(), self.maximumHeight())
 
     def leaveEvent(self, event):
         if self.bMenuOpen:

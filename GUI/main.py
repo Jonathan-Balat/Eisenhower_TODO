@@ -1,4 +1,4 @@
-# from PySide2.QtCore import
+from PySide2.QtCore import QSize
 # from PySide2.QtGui import
 from gui_library.MainWindow_Class import MainWindowClass
 from Menu_Class.Menu_Class import MenuClass
@@ -34,7 +34,7 @@ class GUIMain(MainWindowClass):
                                      "QFrame {background-color: rgba(128,0,0,255);}")
 
             # Override Widget event function with new assignment
-            self.resizeEvent = self.resizeEvent
+            # self.resizeEvent = self.resizeEvent
 
             self.show()
 
@@ -42,9 +42,7 @@ class GUIMain(MainWindowClass):
             print("[ERROR]: Application session does not exist!")
 
     def resizeEvent(self, event):
-        self.menu.setMinimumSize(10, self.height())
-        self.menu.setMaximumSize(int(self.width()*GUIMain.DISP_MENU_W), self.height())
-        self.menu.resize(self.width(), self.height())
+        self.menu.resizeEvent(None)
 
         self.f_dashboard.move(self.menu.width(), 0)
         self.f_dashboard.setMinimumSize(self.width() - self.menu.width(), 100)
@@ -58,8 +56,6 @@ class GUIMain(MainWindowClass):
         self.f_main.setGeometry(self.menu.width(), self.f_dashboard.height(),
                                 self.width() - self.menu.width(),
                                 int(self.height() - self.f_dashboard.height()))
-
-        print(self.menu.width(), self.f_dashboard.height())
 
 
 if "__main__" == __name__:
