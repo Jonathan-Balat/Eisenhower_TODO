@@ -1,4 +1,4 @@
-from PySide2.QtCore import QSize
+# from PySide2.QtCore import
 # from PySide2.QtGui import
 from gui_library.MainWindow_Class import MainWindowClass
 from Menu_Class.Menu_Class import MenuClass
@@ -32,9 +32,6 @@ class GUIMain(MainWindowClass):
             self.f_main = FrameClass(self,
                                      (0, 0, 0, 0),
                                      "QFrame {background-color: rgba(128,0,0,255);}")
-
-            # Override Widget event function with new assignment
-            # self.resizeEvent = self.resizeEvent
 
             self.show()
 
