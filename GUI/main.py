@@ -1,9 +1,10 @@
-# from PySide2.QtCore import
-# from PySide2.QtGui import
-from gui_library.MainWindow_Class import MainWindowClass
-from Menu_Class.Menu_Class import MenuClass
-from gui_library.Frame_Class import FrameClass
+# Python Libraries
 from PySide2.QtWidgets import QApplication
+
+# Custom Libraries
+from gui_library.MainWindow_Class import MainWindowClass
+from gui_library.Frame_Class import FrameClass
+from Menu_Class.Menu_Class import MenuClass
 
 """
     References:
