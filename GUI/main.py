@@ -44,7 +44,7 @@ class GUIMain(MainWindowClass):
 
         self.f_dashboard.move(self.menu.width(), 0)
         self.f_dashboard.setMinimumSize(self.width() - self.menu.width(), 100)
-        self.f_dashboard.setMaximumSize(self.width() - self.menu.width(), int(self.height()*GUIMain.DISP_DASH_H))
+        self.f_dashboard.setMaximumSize(self.width() - self.menu.width(), 100)  # int(self.height()*GUIMain.DISP_DASH_H))
         self.f_dashboard.resize(self.width(), self.height())
 
         # self.f_dashboard.setGeometry(self.menu.width(), 0,

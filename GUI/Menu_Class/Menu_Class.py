@@ -39,11 +39,20 @@ class MenuClass(QWidget):
         self.btn_pin.clicked.connect(self.btn_pin_event)
 
         # Menu_submenu
+        self.wdt_account = QWidget(self.f_menu)
+        self.wdt_account.setMinimumHeight(100)
+        self.wdt_account.setMaximumHeight(100)
+        self.f_account = FrameClass(self.wdt_account,
+                                    (0, 0, 0, 0),
+                                    "QFrame {background-color: rgba(0, 190, 0, 255);}")
+
+        # Menu_submenu
         self.wdt_menu = QWidget(self.f_menu)
 
         self.f_submenu = FrameClass(self.wdt_menu,
                                     (0, 0, 0, 0),
-                                    "QFrame {background-color: rgba(150, 120, 130, 255);}")
+                                    "QFrame {background-color: rgba(0, 120, 0, 255);}")
+        self.btn_pin.raise_()
 
     ####################    EVENT SECTION    ####################
     def btn_pin_event(self):
@@ -64,10 +73,13 @@ class MenuClass(QWidget):
         self.f_menu.setMinimumSize(0, height)
         self.f_menu.setMaximumSize(self.maximumWidth(), self.maximumHeight())
 
-        self.btn_pin.setGeometry(self.f_menu.maximumWidth() - 30, 5, 25, 25)
+        self.btn_pin.setGeometry(self.maximumWidth() - 30, 5, 25, 25)
 
         # Menu_submenu
-        self.wdt_menu.setGeometry(0, self.f_menu.maximumHeight()//7, self.f_menu.maximumWidth(), ((self.f_menu.maximumHeight()*6)//7)+1)
+        self.wdt_account.setGeometry(0, 0, self.maximumWidth(), 0)
+        self.f_account.setGeometry(0, 0, self.wdt_account.width(), self.wdt_account.height())
+
+        self.wdt_menu.setGeometry(0, self.wdt_account.height(), self.maximumWidth(), self.maximumHeight() - self.wdt_account.height())
         self.f_submenu.setGeometry(0, 0, self.wdt_menu.width(), self.wdt_menu.height())
 
     def leaveEvent(self, event):
