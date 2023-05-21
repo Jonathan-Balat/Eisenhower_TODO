@@ -15,7 +15,11 @@ class MenuClass(QWidget):
 
         self.animator = AnimatorClass(parent.session)
 
-        self.__widget_setup(self)
+        self.__widget_setup()
+        
+        #
+        # self.menu_option_generator = MenuGroupClass()
+        self.__setup_submenu()
 
         # TODO: Fixed Max and width but should adjust according to DPI settings
         # self.setMaximumWidth(150)
@@ -27,9 +31,9 @@ class MenuClass(QWidget):
         self.setMouseTracking(True)
 
     ####################    EVENT SECTION    ####################
-    def __widget_setup(self, parent):
+    def __widget_setup(self):
         # Menu_main
-        self.f_menu = FrameClass(parent,
+        self.f_menu = FrameClass(self,
                                  (0, 0, 0, 0),
                                  "QFrame {background-color: rgba(80, 120, 190, 90);}")
         self.btn_pin = ButtonClass(self.f_menu,
@@ -42,6 +46,7 @@ class MenuClass(QWidget):
         self.wdt_account = QWidget(self.f_menu)
         self.wdt_account.setMinimumHeight(100)
         self.wdt_account.setMaximumHeight(100)
+
         self.f_account = FrameClass(self.wdt_account,
                                     (0, 0, 0, 0),
                                     "QFrame {background-color: rgba(0, 190, 0, 255);}")
@@ -52,17 +57,19 @@ class MenuClass(QWidget):
         self.f_submenu = FrameClass(self.wdt_menu,
                                     (0, 0, 0, 0),
                                     "QFrame {background-color: rgba(0, 120, 0, 255);}")
+
+        # Reorder widgets
         self.btn_pin.raise_()
 
+    def __setup_submenu(self):
+
+        self.btn_option = ButtonClass(self.wdt_menu,
+                                   (0,0,0,0),
+                                   None,
+                                   "QPushButton {background-color: rgba(170,0,0,255);}")
+        self.btn_option.clicked.connect(lambda: print("Menu 1"))
+
     ####################    EVENT SECTION    ####################
-    def btn_pin_event(self):
-        self.bMenuPinned = not self.bMenuPinned
-
-        if self.bMenuPinned:
-            self.btn_pin.setText("X")
-        else:
-            self.btn_pin.setText("P")
-
     def resizeEvent(self, event):
         width, height = self.parent().size().toTuple()
 
@@ -81,6 +88,7 @@ class MenuClass(QWidget):
 
         self.wdt_menu.setGeometry(0, self.wdt_account.height(), self.maximumWidth(), self.maximumHeight() - self.wdt_account.height())
         self.f_submenu.setGeometry(0, 0, self.wdt_menu.width(), self.wdt_menu.height())
+        self.btn_option.setGeometry(25, 25, self.wdt_menu.width() - 50, 50)
 
     def leaveEvent(self, event):
         if self.bMenuOpen and not self.bMenuPinned:
@@ -89,6 +97,14 @@ class MenuClass(QWidget):
     def enterEvent(self, event):
         if not self.bMenuOpen:
             self.open_menu()
+
+    def btn_pin_event(self):
+        self.bMenuPinned = not self.bMenuPinned
+
+        if self.bMenuPinned:
+            self.btn_pin.setText("X")
+        else:
+            self.btn_pin.setText("Pin")
 
     ####################    STATUS SECTION    ####################
     def set_menu_open_status(self, b_status: bool):
